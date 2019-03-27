@@ -36,16 +36,16 @@
 #define MM_PER_SEGMENT  (10)
 
 
-int Xdir = 7;
-int Xstep = 6;
-int Ydir = 4;
-int Ystep = 5;
-int Xen = 8;   //Motor X enable pin
-int Yen = 12;  //Motor Y enable pin
+int Xdir = 5; //7
+int Xstep = 2; //6
+int Ydir = 6;
+int Ystep = 3;
+int en = 8;   //Motor X enable pin
+int xhome = 9; 
+int yhome = 10;  
 
 int up = 50;
-int down = 78;
-int button = 2;
+int down = 90;
 
 /**
 * This file is part of GcodeCNCDemo.

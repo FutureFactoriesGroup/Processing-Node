@@ -33,17 +33,14 @@ void setup()
 {
   Serial.begin(BAUD);  // open coms
   
-  pen.attach(9); 
-  pen.write(50); 
+  pen.attach(11); 
+  pen.write(up); 
   pinMode(Xdir,OUTPUT);
   pinMode(Xstep,OUTPUT);
   pinMode(Ydir,OUTPUT);
   pinMode(Ystep,OUTPUT);
-  pinMode(Xen,OUTPUT);
-  pinMode(Yen,OUTPUT);
-  digitalWrite(Xen,LOW);// Low Level Enable
-  digitalWrite(Yen,LOW);// Low Level Enable
-
+  pinMode(en,OUTPUT);
+  digitalWrite(en,LOW);// Low Level Enable
   position(0,0);  // set staring position
   feedrate((MAX_FEEDRATE + MIN_FEEDRATE)/2);  // set default speed
 
@@ -132,9 +129,6 @@ void position(float npx,float npy)
  **/
 void line(float newx,float newy)
 {
-  digitalWrite(Xen,LOW);// Low Level Enable
-  digitalWrite(Yen,LOW);// Low Level Enable
-  
   long i;
   long over= 0;
   
@@ -312,7 +306,7 @@ void help()
   Serial.println(F("G90; - absolute mode"));
   Serial.println(F("G91; - relative mode"));
   Serial.println(F("G92 [X(steps)] [Y(steps)]; - change logical position"));
-  Serial.println(F("M18; - disable motors"));
+  Serial.println(F("M18; - Home Motors"));
   Serial.println(F("M100; - this help message"));
   Serial.println(F("M114; - report position and feedrate"));
   Serial.println(F("All commands must end with a newline."));
@@ -363,9 +357,7 @@ void processCommand()
   cmd = parsenumber('M',-1);
   switch(cmd)
   {
-    case 18:  // disable motors
-      digitalWrite(Xen,HIGH);// Low Level Enable
-      digitalWrite(Yen,HIGH);// Low Level Enable
+    case 18:  // home
       break;
     case 100:
       help();
@@ -387,39 +379,56 @@ void ready()
   sofar=0;  // clear input buffer
   Serial.print(F(">"));  // signal ready to receive input
 }
-
+//G01 X1000 Y-1000 F1000
 int xMove(bool dir)
 {
-  //G01 X000 Y500 F10000
-    delayMicroseconds(2);
     digitalWrite(Xdir,dir);
-    digitalWrite(Ydir,0);
-    digitalWrite(Xen,LOW);// Low Level Enable
-    digitalWrite(Yen,HIGH);// Low Level Disable
-    digitalWrite(Xstep,LOW);
-    delayMicroseconds(2);
     digitalWrite(Xstep,HIGH);
-    delay(1);
-    //digitalWrite(Xen,HIGH);// Low Level Disable
-    //digitalWrite(Yen,HIGH);// Low Level Disable
+    delayMicroseconds(200);
+    digitalWrite(Xdir,dir);
+    digitalWrite(Xstep,LOW);
+    delayMicroseconds(200);
 }
 
 int yMove(bool dir)
 {
-    delayMicroseconds(2);
-    digitalWrite(Yen,LOW);// Low Level Enable
-    digitalWrite(Xen,HIGH);// Low Level Disable
-    digitalWrite(Xdir,0);
-    digitalWrite(Ydir,dir);
-    digitalWrite(Ystep,LOW);
-    delayMicroseconds(2);
     digitalWrite(Ydir,dir);
     digitalWrite(Ystep,HIGH);
-    delay(1);
-    //digitalWrite(Xen,HIGH);// Low Level Disable
-    //digitalWrite(Yen,HIGH);// Low Level Disable
+    delayMicroseconds(200);
+    digitalWrite(Ydir,dir);
+    digitalWrite(Ystep,LOW);
+    delayMicroseconds(200);
 }
 
+void Home()
+{
+    int buttonState;
+    xcount = 0;
+    ycount = 0;
+    
+    xDir(0);
+    yDir(0);
+    
+    buttonState = 0;
+    while(buttonState != 1)
+    {
+      buttonState = digitalRead(xhome);
+      digitalWrite(Ystep,HIGH);
+      delayMicroseconds(200);
+      digitalWrite(Ystep,LOW);
+      delayMicroseconds(200);
+    }
+    
+    buttonState = 0;
+    while(buttonState != 1)
+    {
+      buttonState = digitalRead(yhome);
+      digitalWrite(Ystep,HIGH);
+      delayMicroseconds(200);
+      digitalWrite(Ystep,LOW);
+      delayMicroseconds(200);
+    }
+}
 
 /**
 * This file is part of GcodeCNCDemo.

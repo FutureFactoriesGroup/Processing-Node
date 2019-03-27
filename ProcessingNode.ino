@@ -9,42 +9,51 @@ The rotation velocity can be adjusted by the code switch
 Microcontroller: Arduino UNO  
 */
 
-int Xdir = 7;
-int Xstep = 6;
-int Ydir = 4;
-int Ystep = 5;
-int Xen=8;  //Motor X enable pin
-int Yen=12;  //Motor Y enable pin
+#include <Servo.h>
 
-int button = 2;
+int Xdir = 5; // 7
+int Xstep = 2; //6
+int Ydir = 6;
+int Ystep = 3;
+int en=8;  //Motor enable pin
+int xhome = 9;
+int Yhome = 10;
+
 int xcount = 0;
 int ycount = 0;
+
+Servo pen;
 void setup()
 {
   Serial.begin(9600);
+  pen.attach(11);
   pinMode(Xdir,OUTPUT);
   pinMode(Xstep,OUTPUT);
   pinMode(Ydir,OUTPUT);
   pinMode(Ystep,OUTPUT);
-  pinMode(Xen,OUTPUT);
-  pinMode(Yen,OUTPUT);
-  digitalWrite(Xen,LOW);// Low Level Enable
-  digitalWrite(Yen,LOW);// Low Level Enable
+  pinMode(en,OUTPUT);
 
-  pinMode(button,INPUT);
+  digitalWrite(en,LOW);// Low Level Enable
+  pinMode(xhome, INPUT);
+  pen.write(90);
 }
-// Y limit = 1900 counts
-// X limit = 2320 counts
+
+// Y limit = 9375 counts  1cm = 391 counts 
+// X limit = 7700 counts
+
+int cm = 391;
 void loop()
 {
-    xMove(1,700);
-    delay(200);
-    yMove(1,700);
-    delay(200);
-    xMove(0,700);
-    delay(200);
-    yMove(0,700);
-    delay(200);
+    //Home();
+    delay(500);
+    xMove(1,5*cm);
+    delay(500);
+    yMove(1,5*cm);
+    delay(500);
+    xMove(0,5*cm);
+    delay(500);
+    yMove(0,5*cm);
+    delay(500);
     while(1){}
 }
 
@@ -61,38 +70,48 @@ int yDir(bool dir)
 int xMove(bool dir,int steps)
 {
     xcount = 0;
-    digitalWrite(Xen,LOW);// Low Level Enable
-    digitalWrite(Yen,HIGH);// Low Level Disable
     xDir(dir);
-    yDir(0);
     while(xcount < steps)
     {
       digitalWrite(Xstep,LOW);
-      delayMicroseconds(10);
+      delayMicroseconds(200);
       digitalWrite(Xstep,HIGH);
-      delay(1);
+      delayMicroseconds(200);
       xcount++;
     }
-    digitalWrite(Xen,HIGH);// Low Level Enable
-    digitalWrite(Yen,HIGH);// Low Level Enable
 }
 
 int yMove(bool dir,int steps)
 {
     ycount = 0;
-    digitalWrite(Yen,LOW);// Low Level Enable
-    digitalWrite(Xen,HIGH);// Low Level Disable
     yDir(dir);
-    xDir(0);
     while(ycount < steps)
     {
       digitalWrite(Ystep,LOW);
-      delayMicroseconds(10);
+      delayMicroseconds(200);
       digitalWrite(Ystep,HIGH);
-      delay(1);
+      delayMicroseconds(200);
       ycount++;
     }
-    digitalWrite(Xen,HIGH);// Low Level Enable
-    digitalWrite(Yen,HIGH);// Low Level Enable
+}
+
+void Home()
+{
+    xcount = 0;
+    ycount = 0;
+    
+    xDir(0);
+    yDir(0);
+    
+    int buttonState = 0;
+    
+    while(buttonState != 1)
+    {
+      buttonState = digitalRead(xhome);
+      digitalWrite(Xstep,LOW);
+      delayMicroseconds(200);
+      digitalWrite(Xstep,HIGH);
+      delayMicroseconds(200);
+    }
 }
 
