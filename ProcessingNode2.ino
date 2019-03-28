@@ -428,6 +428,8 @@ void Home()
       digitalWrite(Ystep,LOW);
       delayMicroseconds(200);
     }
+    
+    position(0,0);  // set staring position
 }
 
 /**
