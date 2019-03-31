@@ -44,8 +44,8 @@ int en = 8;   //Motor X enable pin
 int xhome = 9; 
 int yhome = 10;  
 
-int up = 50;
-int down = 90;
+int up = 40;
+int down = 66;
 
 /**
 * This file is part of GcodeCNCDemo.

@@ -65,7 +65,6 @@ void loop()
       // entire message received
       buffer[sofar]=0;  // end the buffer so string functions work right
       Serial.print(F("\r\n"));  // echo a return character for humans
-      Home();
       delay(1000);
       processCommand();  // do something with the command
       ready();
@@ -360,6 +359,7 @@ void processCommand()
   switch(cmd)
   {
     case 18:  // home
+       Home();
       break;
     case 100:
       help();
@@ -378,6 +378,7 @@ void processCommand()
  */
 void ready()
 {
+  //Home();
   sofar=0;  // clear input buffer
   Serial.print(F(">"));  // signal ready to receive input
 }
@@ -405,11 +406,9 @@ int yMove(bool dir)
 void Home()
 {
     int buttonState;
-    xcount = 0;
-    ycount = 0;
     
-    xDir(0);
-    yDir(0);
+    digitalWrite(Xdir,0);
+    digitalWrite(Ydir,0);
     
     buttonState = 0;
     while(buttonState != 1)

@@ -35,7 +35,7 @@ void setup()
 
   digitalWrite(en,LOW);// Low Level Enable
   pinMode(xhome, INPUT);
-  pen.write(90);
+  pen.write(40);
 }
 
 // Y limit = 9375 counts  1cm = 391 counts 
@@ -50,6 +50,8 @@ void loop()
     delay(500);
     yMove(1,5*cm);
     delay(1000);
+    pen.write(67);
+    delay(500);
     xMove(1,5*cm);
     delay(500);
     yMove(1,5*cm);
@@ -57,6 +59,8 @@ void loop()
     xMove(0,5*cm);
     delay(500);
     yMove(0,5*cm);
+    delay(500);
+    pen.write(40);
     delay(500);
     Home();
     while(1){}
