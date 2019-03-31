@@ -17,7 +17,7 @@ int Ydir = 6;
 int Ystep = 3;
 int en=8;  //Motor enable pin
 int xhome = 9;
-int Yhome = 10;
+int yhome = 10;
 
 int xcount = 0;
 int ycount = 0;
@@ -44,8 +44,12 @@ void setup()
 int cm = 391;
 void loop()
 {
-    //Home();
+    Home();
     delay(500);
+    xMove(1,10*cm);
+    delay(500);
+    yMove(1,5*cm);
+    delay(1000);
     xMove(1,5*cm);
     delay(500);
     yMove(1,5*cm);
@@ -54,6 +58,7 @@ void loop()
     delay(500);
     yMove(0,5*cm);
     delay(500);
+    Home();
     while(1){}
 }
 
@@ -97,20 +102,30 @@ int yMove(bool dir,int steps)
 
 void Home()
 {
+    int buttonState;
     xcount = 0;
     ycount = 0;
     
     xDir(0);
     yDir(0);
     
-    int buttonState = 0;
-    
+    buttonState = 0;
     while(buttonState != 1)
     {
       buttonState = digitalRead(xhome);
+      digitalWrite(Xstep,HIGH);
+      delayMicroseconds(200);
       digitalWrite(Xstep,LOW);
       delayMicroseconds(200);
-      digitalWrite(Xstep,HIGH);
+    }
+    
+    buttonState = 0;
+    while(buttonState != 1)
+    {
+      buttonState = digitalRead(yhome);
+      digitalWrite(Ystep,HIGH);
+      delayMicroseconds(200);
+      digitalWrite(Ystep,LOW);
       delayMicroseconds(200);
     }
 }

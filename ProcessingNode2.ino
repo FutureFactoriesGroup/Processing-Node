@@ -65,6 +65,8 @@ void loop()
       // entire message received
       buffer[sofar]=0;  // end the buffer so string functions work right
       Serial.print(F("\r\n"));  // echo a return character for humans
+      Home();
+      delay(1000);
       processCommand();  // do something with the command
       ready();
     }
@@ -413,9 +415,9 @@ void Home()
     while(buttonState != 1)
     {
       buttonState = digitalRead(xhome);
-      digitalWrite(Ystep,HIGH);
+      digitalWrite(Xstep,HIGH);
       delayMicroseconds(200);
-      digitalWrite(Ystep,LOW);
+      digitalWrite(Xstep,LOW);
       delayMicroseconds(200);
     }
     
