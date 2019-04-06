@@ -1,8 +1,3 @@
- /*
-  RB-Dfr-539 :: Dual Bipolar Stepper Motor Controller for Arduino
-  http://www.robotshop.com/en/dual-bipolar-stepper-motor-controller-arduino.html
-*/
-
 /*
 This sample code is for testing the 2 stepper motors 
 The rotation velocity can be adjusted by the code switch 
@@ -50,13 +45,23 @@ void loop()
     delay(500);
     yMove(1,5*cm);
     delay(1000);
-    pen.write(67);
+    pen.write(70);
     delay(500);
     xMove(1,5*cm);
+    pen.write(40);
+    delay(500);
+    delay(500);
+    pen.write(70);
     delay(500);
     yMove(1,5*cm);
+    pen.write(40);
+    delay(500);
+    pen.write(70);
     delay(500);
     xMove(0,5*cm);
+    pen.write(40);
+    delay(500);
+    pen.write(70);
     delay(500);
     yMove(0,5*cm);
     delay(500);
@@ -85,7 +90,7 @@ int xMove(bool dir,int steps)
       digitalWrite(Xstep,LOW);
       delayMicroseconds(200);
       digitalWrite(Xstep,HIGH);
-      delayMicroseconds(200);
+      delayMicroseconds(1000);
       xcount++;
     }
 }
@@ -99,7 +104,7 @@ int yMove(bool dir,int steps)
       digitalWrite(Ystep,LOW);
       delayMicroseconds(200);
       digitalWrite(Ystep,HIGH);
-      delayMicroseconds(200);
+      delayMicroseconds(1000);
       ycount++;
     }
 }

@@ -18,7 +18,7 @@ float px, py;      // location
 
 // speeds
 float fr =     0;  // human version
-long  step_delay;  // machine version
+long  step_delay = 1000;  // machine version
 
 // settings
 char mode_abs=1;   // absolute mode?
@@ -324,14 +324,14 @@ void processCommand()
   {
     case  0:
     case  1: { // line
-      feedrate(parsenumber('F',fr));
+      //feedrate(parsenumber('F',fr));
       line( parsenumber('X',(mode_abs?px:0)) + (mode_abs?0:px),
           parsenumber('Y',(mode_abs?py:0)) + (mode_abs?0:py) );
       break;
     }
     case 2:
     case 3: {  // arc
-      feedrate(parsenumber('F',fr));
+      //feedrate(parsenumber('F',fr));
       arc(parsenumber('I',(mode_abs?px:0)) + (mode_abs?0:px),
           parsenumber('J',(mode_abs?py:0)) + (mode_abs?0:py),
           parsenumber('X',(mode_abs?px:0)) + (mode_abs?0:px),
@@ -390,7 +390,7 @@ int xMove(bool dir)
     delayMicroseconds(200);
     digitalWrite(Xdir,dir);
     digitalWrite(Xstep,LOW);
-    delayMicroseconds(200);
+    delayMicroseconds(400);
 }
 
 int yMove(bool dir)
@@ -400,7 +400,7 @@ int yMove(bool dir)
     delayMicroseconds(200);
     digitalWrite(Ydir,dir);
     digitalWrite(Ystep,LOW);
-    delayMicroseconds(200);
+    delayMicroseconds(400);
 }
 
 void Home()
