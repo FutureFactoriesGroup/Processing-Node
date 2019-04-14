@@ -43,12 +43,10 @@ def Gcoder(shape,size):
     time.sleep(2)
     serialprint(info)
     
-
-
 #def listener():
-    #rospy.init_node('ProcessingNode' , anonymous=True)
-    #rospy.Subscriber("processing", String, serialprint)
-    #rospy.spin()
+   # rospy.init_node('ProcessingNode' , anonymous=True)
+   #rospy.Subscriber("processing", String, Gcoder)
+   # rospy.spin()
     
 if __name__ == '__main__':
     shape = 'S'
