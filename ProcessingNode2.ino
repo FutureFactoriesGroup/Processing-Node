@@ -21,7 +21,7 @@ float fr =     0;  // human version
 long  step_delay = 1000;  // machine version
 
 // settings
-char mode_abs=1;   // absolute mode?
+char mode_abs=0;   // absolute mode?
 
 
 Servo pen;
@@ -304,6 +304,7 @@ void help()
   Serial.println(F("G04 P[seconds]; - delay"));
   Serial.println(F("G05 - Pen Up"));
   Serial.println(F("G06 - Pen down"));
+  Serial.println(F("G07 - wait 0.5 seconds"));
   Serial.println(F("G90; - absolute mode"));
   Serial.println(F("G91; - relative mode"));
   Serial.println(F("G92 [X(steps)] [Y(steps)]; - change logical position"));
@@ -345,6 +346,9 @@ void processCommand()
       break;
     case  6:
       pen.write(down);
+      break;
+    case  7:
+      delay(500);
       break;
     case 90:  mode_abs=1;  break;  // absolute mode
     case 91:  mode_abs=0;  break;  // relative mode
