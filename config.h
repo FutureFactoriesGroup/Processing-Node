@@ -21,7 +21,7 @@
 
 
 #define VERSION        (1)  // firmware version
-#define BAUD           (9600)  // How fast is the Arduino talking?
+#define BAUD           (115200)  // How fast is the Arduino talking?
 #define MAX_BUF        (64)  // What is the longest message Arduino can store?
 #define STEPS_PER_TURN (400)  // depends on your stepper motor.  most are 200.
 #define MIN_STEP_DELAY (50.0)

@@ -6,12 +6,15 @@ import time
 import serial
 #from std_msgs.msg import String
 
-arduino = serial.Serial('COM18', 9600,timeout = 1)
+arduino = serial.Serial('COM18', 115200,timeout = 1)
 time.sleep(2)
 
 cm = 391
 Delay = "G07\n"
 Home = "M18\n"
+Up = "G05\n"
+Down = "G06\n"
+Length = 3*cm
 
 def Centre(pos):
     if pos == '1':
@@ -25,57 +28,92 @@ def Centre(pos):
     return(Command)
 
 def  X(Size):
-    Command =  "G00 " + "X"+str(Size) + " Y"+str(0)
+    Command =  "G00 " + "X"+str(Size) + " Y"+str(0)+"\n"
     return(Command)
 def  Y(Size):
-    Command =  "G00 " + "X"+str(0) + " Y"+str(Size)
+    Command =  "G00 " + "X"+str(0) + " Y"+str(Size)+"\n"
     return(Command)
 
 def  DiagTL(Size):
-    Command =  "G00 " + "X"+str(Size) + " Y"+str(-Size)
+    Command =  "G00 " + "X"+str(Size) + " Y"+str(-Size)+"\n"
     return(Command)
 def  DiagTR(Size):
-    Command =  "G00 " + "X"+str(-Size) + " Y"+str(-Size)
+    Command =  "G00 " + "X"+str(-Size) + " Y"+str(-Size)+"\n"
     return(Command)
 def  DiagBL(Size):
-    Command =  "G00 " + "X"+str(Size) + " Y"+str(Size)
+    Command =  "G00 " + "X"+str(Size) + " Y"+str(Size)+"\n"
     return(Command)
 def  DiagBR(Size):
-    Command =  "G00 " + "X"+str(-Size) + " Y"+str(Size)
+    Command =  "G00 " + "X"+str(-Size) + " Y"+str(Size)+"\n"
     return(Command)
 
 def DrawSquare(pos):
-    Length = 3*cm
     startpos = Centre(pos)
-    Command =  Delay+startpos+X(Length)+"\n"+Delay+Y(Length)+"\n"+Delay+X(-Length)+"\n"+Delay+Y(-Length)+"\n"
-    return(Command)
+    
+    serialprint(Home);
+    time.sleep(10)
+    serialprint(startpos)
+    time.sleep(5)
+    serialprint(X(Length))
+    time.sleep(5)
+    serialprint(Y(Length))
+    time.sleep(5)
+    serialprint(X(-Length))
+    time.sleep(5)
+    serialprint(Y(-Length))
+    time.sleep(5)
+   
 def DrawDiamond(pos):
-    Length = 3*cm
     startpos = Centre(pos)
-    Command =  Delay+startpos+DiagTL(Length/2)+"\n"+Delay+DiagBL(Length/2)+"\n"+Delay+DiagBR(Length/2)+"\n"+Delay+DiagTR(Length/2)+"\n"
-    return(Command)
+    
+    serialprint(Home);
+    time.sleep(10)
+    serialprint(startpos)
+    time.sleep(5)
+    serialprint(DiagTL(Length/2))
+    time.sleep(5)
+    serialprint(DiagBL(Length/2))
+    time.sleep(5)
+    serialprint(DiagBR(Length/2))
+    time.sleep(5)
+    serialprint(DiagTR(Length/2))
+    time.sleep(5)
+    
 def DrawTriangle(pos):
-    Length = 3*cm
     startpos = Centre(pos)
-    Command =  Delay+startpos+Delay+DiagTL(Length)+"\n"+Delay+DiagBL(Length)+"\n"+Delay+X(-Length)+"\n"
-    return(Command)
+    
+    serialprint(Home);
+    time.sleep(10)
+    serialprint(Up)
+    serialprint(startpos)
+    time.sleep(5)
+    serialprint(Down)
+    time.sleep(1)
+    serialprint(DiagTL(Length/2))
+    serialprint(Up)
+    time.sleep(5)
+    serialprint(Down)
+    time.sleep(1)
+    serialprint(DiagBL(Length/2))
+    serialprint(Up)
+    time.sleep(5)
+    serialprint(Down)
+    time.sleep(1)
+    serialprint(Delay+X(-Length))
+    serialprint(Up)
+    time.sleep(5)
 
 def serialprint(data):
     print(data)
     arduino.write(data)
-    time.sleep(0.5)
     
 def Gcoder(shape,pos):
-    info = Home
     if shape == 'S':
-        info = info +DrawSquare(pos)
+        DrawSquare(pos)
     if shape == 'D':
-        info = info +DrawDiamond(pos)
+        DrawDiamond(pos)
     if shape == 'T':
-        info = info +DrawTriangle(pos)
-
-    time.sleep(2)
-    serialprint(info)
+        DrawTriangle(pos)
     
 #def listener():
    # rospy.init_node('ProcessingNode' , anonymous=True)
@@ -83,6 +121,6 @@ def Gcoder(shape,pos):
    # rospy.spin()
     
 if __name__ == '__main__':
-    shape = 'D'
-    pos = '1'
+    shape = raw_input("Shape (S,T,D)? ")
+    pos = raw_input("Position (1,2,3,4)? ")
     Gcoder(shape,pos)
