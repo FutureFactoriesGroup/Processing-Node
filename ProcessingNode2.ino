@@ -11,7 +11,6 @@
 //------------------------------------------------------------------------------
 // GLOBALS
 //------------------------------------------------------------------------------
-
 char  buffer[MAX_BUF];  // where we store the message until we get a newline
 int   sofar;            // how much is in the buffer
 float px, py;      // location
@@ -64,7 +63,7 @@ void loop()
     {
       // entire message received
       buffer[sofar]=0;  // end the buffer so string functions work right
-      Serial.print(F("\r\n"));  // echo a return character for humans
+      Serial.print("\r\n");  // echo a return character for humans
       delay(1000);
       processCommand();  // do something with the command
       ready();
@@ -136,7 +135,7 @@ void line(float newx,float newy)
   long dx  = newx-px;
   long dy  = newy-py;
   
-  int dirx = dx>0?1:0;
+  int dirx = dx>0?0:1;
   int diry = dy>0?0:1;  // because the motors are mounted in opposite directions
   
   dx = abs(dx);
@@ -294,24 +293,24 @@ void where()
  */
 void help()
 {
-  Serial.print(F("GcodeCNCDemo2AxisV1 "));
+  Serial.print("GcodeCNCDemo2AxisV1 ");
   Serial.println(VERSION);
-  Serial.println(F("Commands:"));
-  Serial.println(F("G00 [X(steps)] [Y(steps)] [F(feedrate)]; - line"));
-  Serial.println(F("G01 [X(steps)] [Y(steps)] [F(feedrate)]; - line"));
-  Serial.println(F("G02 [X(steps)] [Y(steps)] [I(steps)] [J(steps)] [F(feedrate)]; - clockwise arc"));
-  Serial.println(F("G03 [X(steps)] [Y(steps)] [I(steps)] [J(steps)] [F(feedrate)]; - counter-clockwise arc"));
-  Serial.println(F("G04 P[seconds]; - delay"));
-  Serial.println(F("G05 - Pen Up"));
-  Serial.println(F("G06 - Pen down"));
-  Serial.println(F("G07 - wait 0.5 seconds"));
-  Serial.println(F("G90; - absolute mode"));
-  Serial.println(F("G91; - relative mode"));
-  Serial.println(F("G92 [X(steps)] [Y(steps)]; - change logical position"));
-  Serial.println(F("M18; - Home Motors"));
-  Serial.println(F("M100; - this help message"));
-  Serial.println(F("M114; - report position and feedrate"));
-  Serial.println(F("All commands must end with a newline."));
+  Serial.println("Commands:");
+  Serial.println("G00 [X(steps)] [Y(steps)] [F(feedrate)]; - line");
+  Serial.println("G01 [X(steps)] [Y(steps)] [F(feedrate)]; - line");
+  Serial.println("G02 [X(steps)] [Y(steps)] [I(steps)] [J(steps)] [F(feedrate)]; - clockwise arc");
+  Serial.println("G03 [X(steps)] [Y(steps)] [I(steps)] [J(steps)] [F(feedrate)]; - counter-clockwise arc");
+  Serial.println("G04 P[seconds]; - delay");
+  Serial.println("G05 - Pen Up");
+  Serial.println("G06 - Pen down");
+  Serial.println("G07 - wait 0.5 seconds");
+  Serial.println("G90; - absolute mode");
+  Serial.println("G91; - relative mode");
+  Serial.println("G92 [X(steps)] [Y(steps)]; - change logical position");
+  Serial.println("M18; - Home Motors");
+  Serial.println("M100; - this help message");
+  Serial.println("M114; - report position and feedrate");
+  Serial.println("All commands must end with a newline.");
 }
 
 
@@ -411,7 +410,7 @@ void Home()
 {
     int buttonState;
     
-    digitalWrite(Xdir,0);
+    digitalWrite(Xdir,1);
     digitalWrite(Ydir,0);
     
     buttonState = 0;
