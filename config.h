@@ -45,7 +45,7 @@ int xhome = 9;
 int yhome = 10;  
 
 int up = 40;
-int down = 70;
+int down = 80;
 
 /**
 * This file is part of GcodeCNCDemo.

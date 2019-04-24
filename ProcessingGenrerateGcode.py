@@ -18,13 +18,13 @@ Length = 3*cm
 
 def Centre(pos):
     if pos == '1':
-        Command =  "G00 " + "X"+str(6*cm) + " Y"+str(-6*cm) +"\n"+Delay
+        Command =  "G00 " + "X"+str(2*cm) + " Y"+str(-9*cm) +"\n"+Delay
     elif pos == '2':
-        Command =  "G00 " + "X"+str(6*cm) + " Y"+str(-10*cm) + Delay
+        Command =  "G00 " + "X"+str(2*cm) + " Y"+str(-14*cm) +"\n"+ Delay
     elif pos == '3':
-        Command =  "G00 " + "X"+str(10*cm) + " Y"+str(-6*cm) + Delay
+        Command =  "G00 " + "X"+str(7*cm) + " Y"+str(-9*cm) +"\n"+ Delay
     elif pos == '4':
-        Command =  "G00 " + "X"+str(10*cm) + " Y"+str(-10*cm) + Delay
+        Command =  "G00 " + "X"+str(7*cm) + " Y"+str(-14*cm) +"\n"+ Delay
     return(Command)
 
 def  X(Size):
@@ -47,6 +47,23 @@ def  DiagBR(Size):
     Command =  "G00 " + "X"+str(-Size) + " Y"+str(Size)+"\n"
     return(Command)
 
+def DrawPentagon(pos):
+    startpos = Centre(pos)
+    
+    serialprint(Home);
+    time.sleep(10)
+    serialprint(startpos)
+    time.sleep(5)
+    serialprint(Y(-Length/2))
+    time.sleep(5)
+    serialprint(DiagTL(Length/2))
+    time.sleep(5)
+    serialprint(DiagBL(Length/2))
+    time.sleep(5)
+    serialprint(Y(Length/2))
+    time.sleep(5)
+    serialprint(X(-Length))
+    
 def DrawSquare(pos):
     startpos = Centre(pos)
     
@@ -108,6 +125,8 @@ def serialprint(data):
     arduino.write(data)
     
 def Gcoder(shape,pos):
+    if shape == 'P':
+        DrawPentagon(pos)
     if shape == 'S':
         DrawSquare(pos)
     if shape == 'D':
@@ -121,6 +140,9 @@ def Gcoder(shape,pos):
    # rospy.spin()
     
 if __name__ == '__main__':
-    shape = raw_input("Shape (S,T,D)? ")
-    pos = raw_input("Position (1,2,3,4)? ")
-    Gcoder(shape,pos)
+    shape = list()
+    pos = list()
+    for x in range(0,4):
+        shape.append(raw_input("Shape (P,T,S,D)? ")) 
+        pos.append( raw_input("Position (1,2,3,4,0)? "))
+        Gcoder(shape[x],pos[x])
