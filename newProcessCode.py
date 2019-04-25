@@ -43,13 +43,13 @@ def createMessage(messageList):
 
 def Centre(pos):
     if pos == '1':
-        Command =  "G00 " + "X"+str(2*cm) + " Y"+str(-9*cm) +"\n"+Delay
+        Command =  "G00 " + "X"+str(1*cm) + " Y"+str(-9*cm) +"\n"+Delay
     elif pos == '2':
-        Command =  "G00 " + "X"+str(2*cm) + " Y"+str(-14*cm) +"\n"+ Delay
+        Command =  "G00 " + "X"+str(1*cm) + " Y"+str(-13*cm) +"\n"+ Delay
     elif pos == '3':
-        Command =  "G00 " + "X"+str(5*cm) + " Y"+str(-9*cm) +"\n"+ Delay
+        Command =  "G00 " + "X"+str(6*cm) + " Y"+str(-9*cm) +"\n"+ Delay
     elif pos == '4':
-        Command =  "G00 " + "X"+str(5*cm) + " Y"+str(-14*cm) +"\n"+ Delay
+        Command =  "G00 " + "X"+str(6*cm) + " Y"+str(-13*cm) +"\n"+ Delay
     return(Command)
 
 def  X(Size):
@@ -77,32 +77,62 @@ def DrawPentagon(pos):
 
     serialprint(Home)
     time.sleep(10)
+    serialprint(Up)
     serialprint(startpos)
     time.sleep(5)
+    serialprint(Down)
+    time.sleep(1)
     serialprint(Y(-Length/2))
+    serialprint(Up)
     time.sleep(5)
+    serialprint(Down)
+    time.sleep(1)
     serialprint(DiagTL(Length/2))
+    serialprint(Up)
     time.sleep(5)
+    serialprint(Down)
+    time.sleep(1)
     serialprint(DiagBL(Length/2))
+    serialprint(Up)
     time.sleep(5)
+    serialprint(Down)
+    time.sleep(1)
     serialprint(Y(Length/2))
+    serialprint(Up)
     time.sleep(5)
+    serialprint(Down)
+    time.sleep(1)
     serialprint(X(-Length))
+    serialprint(Up)
+    time.sleep(5)
 
 def DrawSquare(pos):
     startpos = Centre(pos)
 
     serialprint(Home)
     time.sleep(10)
+    serialprint(Up)
     serialprint(startpos)
     time.sleep(5)
+    serialprint(Down)
+    time.sleep(1)
     serialprint(X(Length))
+    serialprint(Up)
     time.sleep(5)
+    serialprint(Down)
+    time.sleep(1)
     serialprint(Y(-Length))
+    serialprint(Up)
     time.sleep(5)
+    serialprint(Down)
+    time.sleep(1)
     serialprint(X(-Length))
+    serialprint(Up)
     time.sleep(5)
+    serialprint(Down)
+    time.sleep(1)
     serialprint(Y(Length))
+    serialprint(Up)
     time.sleep(5)
 
 def DrawDiamond(pos):
@@ -110,15 +140,28 @@ def DrawDiamond(pos):
 
     serialprint(Home)
     time.sleep(10)
+    serialprint(Up)
     serialprint(startpos)
     time.sleep(5)
+    serialprint(Down)
+    time.sleep(1)
     serialprint(DiagTL(Length/2))
+    serialprint(Up)
     time.sleep(5)
+    serialprint(Down)
+    time.sleep(1)
     serialprint(DiagBL(Length/2))
+    serialprint(Up)
     time.sleep(5)
+    serialprint(Down)
+    time.sleep(1)
     serialprint(DiagBR(Length/2))
+    serialprint(Up)
     time.sleep(5)
+    serialprint(Down)
+    time.sleep(1)
     serialprint(DiagTR(Length/2))
+    serialprint(Up)
     time.sleep(5)
 
 def DrawTriangle(pos):
@@ -201,3 +244,4 @@ rospy.spin()
 #         shape.append(raw_input("Shape (P,T,S,D)? "))
 #         pos.append( raw_input("Position (1,2,3,4,0)? "))
 #         Gcoder(shape[x],pos[x]) 
+ 
