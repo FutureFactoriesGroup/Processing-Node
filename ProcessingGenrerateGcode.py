@@ -1,10 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 
-#import rospy
+import rospy
 import sys
 import time
 import serial
-#from std_msgs.msg import String
+from std_msgs.msg import String
 
 arduino = serial.Serial('/dev/ttyACM0', 115200,timeout = 1)
 time.sleep(2)
