@@ -51,8 +51,8 @@ def  DiagBR(Size):
 
 def DrawPentagon(pos):
     startpos = Centre(pos)
-
-    serialprint(Home);
+    
+    serialprint(Home)
     time.sleep(10)
     serialprint(startpos)
     time.sleep(5)
@@ -68,24 +68,24 @@ def DrawPentagon(pos):
 
 def DrawSquare(pos):
     startpos = Centre(pos)
-
-    serialprint(Home);
+    
+    serialprint(Home)
     time.sleep(10)
     serialprint(startpos)
     time.sleep(5)
     serialprint(X(Length))
     time.sleep(5)
-    serialprint(Y(Length))
+    serialprint(Y(-Length))
     time.sleep(5)
     serialprint(X(-Length))
     time.sleep(5)
-    serialprint(Y(-Length))
+    serialprint(Y(Length))
     time.sleep(5)
 
 def DrawDiamond(pos):
     startpos = Centre(pos)
-
-    serialprint(Home);
+    
+    serialprint(Home)
     time.sleep(10)
     serialprint(startpos)
     time.sleep(5)
@@ -100,7 +100,8 @@ def DrawDiamond(pos):
 
 def DrawTriangle(pos):
     startpos = Centre(pos)
-    serialprint(Home);
+    
+    serialprint(Home)
     time.sleep(10)
     serialprint(Up)
     serialprint(startpos)
