@@ -50,7 +50,7 @@ def  DiagBR(Size):
 def DrawPentagon(pos):
     startpos = Centre(pos)
     
-    serialprint(Home);
+    serialprint(Home)
     time.sleep(10)
     serialprint(startpos)
     time.sleep(5)
@@ -67,23 +67,23 @@ def DrawPentagon(pos):
 def DrawSquare(pos):
     startpos = Centre(pos)
     
-    serialprint(Home);
+    serialprint(Home)
     time.sleep(10)
     serialprint(startpos)
     time.sleep(5)
     serialprint(X(Length))
     time.sleep(5)
-    serialprint(Y(Length))
+    serialprint(Y(-Length))
     time.sleep(5)
     serialprint(X(-Length))
     time.sleep(5)
-    serialprint(Y(-Length))
+    serialprint(Y(Length))
     time.sleep(5)
    
 def DrawDiamond(pos):
     startpos = Centre(pos)
     
-    serialprint(Home);
+    serialprint(Home)
     time.sleep(10)
     serialprint(startpos)
     time.sleep(5)
@@ -99,7 +99,7 @@ def DrawDiamond(pos):
 def DrawTriangle(pos):
     startpos = Centre(pos)
     
-    serialprint(Home);
+    serialprint(Home)
     time.sleep(10)
     serialprint(Up)
     serialprint(startpos)
@@ -146,3 +146,4 @@ if __name__ == '__main__':
         shape.append(raw_input("Shape (P,T,S,D)? ")) 
         pos.append( raw_input("Position (1,2,3,4,0)? "))
         Gcoder(shape[x],pos[x])
+    serialprint(Home)
