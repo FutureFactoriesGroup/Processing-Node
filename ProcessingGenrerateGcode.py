@@ -37,9 +37,11 @@ def  Y(Size):
 def  DiagTL(Size):
     Command =  "G00 " + "X"+str(Size) + " Y"+str(-Size)+"\n"
     return(Command)
+
 def  DiagTR(Size):
     Command =  "G00 " + "X"+str(-Size) + " Y"+str(-Size)+"\n"
     return(Command)
+
 def  DiagBL(Size):
     Command =  "G00 " + "X"+str(Size) + " Y"+str(Size)+"\n"
     return(Command)
@@ -49,7 +51,7 @@ def  DiagBR(Size):
 
 def DrawPentagon(pos):
     startpos = Centre(pos)
-    
+
     serialprint(Home);
     time.sleep(10)
     serialprint(startpos)
@@ -63,10 +65,10 @@ def DrawPentagon(pos):
     serialprint(Y(Length/2))
     time.sleep(5)
     serialprint(X(-Length))
-    
+
 def DrawSquare(pos):
     startpos = Centre(pos)
-    
+
     serialprint(Home);
     time.sleep(10)
     serialprint(startpos)
@@ -79,10 +81,10 @@ def DrawSquare(pos):
     time.sleep(5)
     serialprint(Y(-Length))
     time.sleep(5)
-   
+
 def DrawDiamond(pos):
     startpos = Centre(pos)
-    
+
     serialprint(Home);
     time.sleep(10)
     serialprint(startpos)
@@ -95,10 +97,9 @@ def DrawDiamond(pos):
     time.sleep(5)
     serialprint(DiagTR(Length/2))
     time.sleep(5)
-    
+
 def DrawTriangle(pos):
     startpos = Centre(pos)
-    
     serialprint(Home);
     time.sleep(10)
     serialprint(Up)
@@ -123,7 +124,7 @@ def DrawTriangle(pos):
 def serialprint(data):
     print(data)
     arduino.write(data)
-    
+
 def Gcoder(shape,pos):
     if shape == 'P':
         DrawPentagon(pos)
@@ -133,16 +134,53 @@ def Gcoder(shape,pos):
         DrawDiamond(pos)
     if shape == 'T':
         DrawTriangle(pos)
-    
+
 #def listener():
    # rospy.init_node('ProcessingNode' , anonymous=True)
    #rospy.Subscriber("processing", String, Gcoder)
    # rospy.spin()
-    
-if __name__ == '__main__':
-    shape = list()
-    pos = list()
-    for x in range(0,4):
-        shape.append(raw_input("Shape (P,T,S,D)? ")) 
-        pos.append( raw_input("Position (1,2,3,4,0)? "))
-        Gcoder(shape[x],pos[x])
+pub = None
+sub = None
+
+def rosCallback(data):
+    global pub
+    global sub
+    inputString = data.data
+    if controlNodeMode == True: # get your data out
+        targetNodeType = inputString[0]
+        targetNodeID = inputString[1]
+        sourceNodeType = inputString[2]
+        sourceNodeID = inputString[3]
+        commandType = inputString[4:7]
+        commandDataLength = int(inputString[7:10])
+        commandData = inputString[10:(10+commandDataLength)]
+        dataToCheckSum = inputString[:(10+commandDataLength)]
+        checksum = inputString[(10+commandDataLength):]
+        # get data, validate
+        m = hashlib.sha256()
+        m.update(dataToCheckSum.encode("utf-8"))
+        hashResult = str(m.hexdigest())
+        if(hashResult == checksum and (targetNodeType=="1" or targetNodeType=="0")): # check the message is valid and for me
+            if commandType == "042": # ie have we been told to do something
+                for shape in commandData:
+                    if shape in "PSDT": # check a recognised shape has been sent
+                        Gcoder(commandData.index(shape),shape)
+                # ack
+                messageString =  createMessage([5,1,2,1,"046"," "])
+                pub.publish(messageString)
+            if commandType == ""
+
+rospy.init_node('ProcessingNode' , anonymous=True)
+sub = rospy.Subscriber("/process", String, rosCallback)
+pub = rospy.Publisher("/process", String, queue_size=10)
+sysSub = rospy.Subscriber("/system", String, rosCallback)
+sysPub = rospy.Publisher("/system", String, queue_size=10)
+rospy.spin()
+#
+# if __name__ == '__main__':
+#     shape = list()
+#     pos = list()
+#     for x in range(0,4):
+#         shape.append(raw_input("Shape (P,T,S,D)? "))
+#         pos.append( raw_input("Position (1,2,3,4,0)? "))
+#         Gcoder(shape[x],pos[x])
