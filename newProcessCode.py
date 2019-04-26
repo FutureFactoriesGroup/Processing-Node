@@ -236,9 +236,9 @@ def rosCallback(data):
     hashResult = str(m.hexdigest())
     if(hashResult == checksum and (targetNodeType=="1" or targetNodeType=="0")): # check the message is valid and for me
         if commandType == "042": # ie have we been told to do something
+            PlacePiece()
             for shape in commandData:
                 if shape in "PSDT": # check a recognised shape has been sent
-                    PlacePiece()
                     Gcoder(shape,str(1+commandData.index(shape)))
             serialprint(Home)
             # ack
